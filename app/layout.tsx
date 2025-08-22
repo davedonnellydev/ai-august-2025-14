@@ -1,12 +1,9 @@
 import '@mantine/core/styles.css';
 
 import React from 'react';
-import {
-  ColorSchemeScript,
-  mantineHtmlProps,
-  MantineProvider,
-} from '@mantine/core';
+import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
 import { theme } from '../theme';
+import { ClientMantineProvider } from './ClientMantineProvider';
 
 export const metadata = {
   title: 'Blog Manager',
@@ -26,7 +23,7 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <ClientMantineProvider theme={theme}>{children}</ClientMantineProvider>
       </body>
     </html>
   );
