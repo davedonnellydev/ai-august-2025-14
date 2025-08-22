@@ -1,7 +1,11 @@
-'use client'
-import { MantineProvider, AppShell, Title } from "@mantine/core";
+'use client';
+import { MantineProvider, AppShell, Title } from '@mantine/core';
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <MantineProvider defaultColorScheme="light">
       <AppShell header={{ height: 56 }} padding="md">
