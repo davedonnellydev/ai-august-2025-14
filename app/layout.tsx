@@ -1,12 +1,17 @@
 import '@mantine/core/styles.css';
 
 import React from 'react';
-import { ColorSchemeScript, mantineHtmlProps, MantineProvider } from '@mantine/core';
+import {
+  ColorSchemeScript,
+  mantineHtmlProps,
+  MantineProvider,
+} from '@mantine/core';
 import { theme } from '../theme';
 
 export const metadata = {
-  title: 'Project [00]',
-  description: 'An App built for AIAugust App a Day Challenge',
+  title: 'Blog Manager',
+  description:
+    'An Blog Manager app with an AI writing assistant built for AIAugust App a Day Challenge',
 };
 
 export default function RootLayout({ children }: { children: any }) {
