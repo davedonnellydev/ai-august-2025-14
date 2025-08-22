@@ -19,10 +19,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { input } = await request.json();
+    const { action, topic, text, tone, notes } = await request.json();
+
+    const textInputs = `topic: ${topic};
+      text: ${text};
+      tone: ${tone};
+      notes: ${notes};
+      `;
 
     // Enhanced validation
-    const textValidation = InputValidator.validateText(input, 2000);
+    const textValidation = InputValidator.validateText(textInputs, 2000);
     if (!textValidation.isValid) {
       return NextResponse.json(
         { error: textValidation.error },
@@ -46,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     // Enhanced content moderation
     const moderatedText = await client.moderations.create({
-      input,
+      input: textInputs,
     });
 
     const { flagged, categories } = moderatedText.results[0];
@@ -64,13 +70,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const instructions: string =
-      'You are a helpful assistant who knows general knowledge about the world. Keep your responses to one or two sentances, maximum.';
+    const instructions: string = `You are an expert blog writer. Given a topic, create an engaging and insightful blog post. Return plain text only unless asked for markdown. Keep paragraphs short (2-4 sentences).`;
+
+    const user = (() => {
+      switch (action) {
+        case 'outline':
+          return `Create a 6-10 bullet outline for a blog post on: "${topic}".`;
+        case 'title':
+          return `Suggest 8 blog post titles (and a slug) for: "${topic}". Output as lines: "Title — slug".`;
+        case 'expand':
+          return `Continue and expand this section (150-250 words), keeping style consistent:\n\n${text}`;
+        case 'rewrite':
+          return `Rewrite the following in a ${tone ?? 'friendly, clear'} tone. Keep technical accuracy:\n\n${text}`;
+        case 'summary':
+          return `Write a 1-paragraph summary and 5 SEO bullet points for this post:\n\n${text}`;
+        default:
+          return `Given notes, propose an outline and intro:\n${notes ?? topic}`;
+      }
+    })();
 
     const response = await client.responses.create({
       model: MODEL,
       instructions,
-      input,
+      input: user,
     });
 
     if (response.status !== 'completed') {
@@ -79,7 +101,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       response: response.output_text || 'Response recieved',
-      originalInput: input,
+      originalInput: {
+        action: action,
+        topic: topic,
+        text: text,
+        tone: tone,
+        notes: notes,
+      },
       remainingRequests: ServerRateLimiter.getRemaining(ip),
     });
   } catch (error) {
