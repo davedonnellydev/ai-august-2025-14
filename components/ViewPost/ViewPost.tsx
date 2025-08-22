@@ -1,6 +1,7 @@
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'isomorphic-dompurify';
 import Link from 'next/link';
+import { Container, Paper, Title, Anchor } from '@mantine/core';
 
 type Post = {
   id: number;
@@ -32,17 +33,17 @@ export function ViewPost({
   const html = DOMPurify.sanitize(post.content_html || md.render(post.content_md));
 
   return (
-    <div className="max-w-4xl mx-auto py-6">
-      <div className="mb-4">
-        <Link className="underline" href={backHref}>
-          ← {backText}
-        </Link>
-      </div>
-      <article className="prose mx-auto py-4">
-        <h1>{post.title}</h1>
-        <div dangerouslySetInnerHTML={{ __html: html }} />
-      </article>
-    </div>
+    <Container>
+      <Anchor component={Link} href={backHref} mb="md">
+        ← {backText}
+      </Anchor>
+      <Paper>
+        <Title order={2} mb="sm">
+          {post.title}
+        </Title>
+        <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+      </Paper>
+    </Container>
   );
 }
 

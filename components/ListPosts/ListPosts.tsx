@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Container, Group, Title, Button, Paper, Stack, Text } from '@mantine/core';
 
 type PostListItem = {
   id: number;
@@ -14,49 +15,55 @@ export function ListPosts({
   isAdmin?: boolean;
 }) {
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-semibold">Posts</h1>
+    <Container>
+      <Group justify="space-between" mb="md">
+        <Title order={2}>Posts</Title>
         {isAdmin && (
-          <Link className="underline" href="/admin/new">
-            New
-          </Link>
+          <Button component={Link} href="/admin/new">
+            New Post
+          </Button>
         )}
-      </div>
+      </Group>
       {posts && posts.length > 0 ? (
-        <ul className="space-y-2">
+        <Stack>
           {posts.map((p) => (
-            <li key={p.id} className="flex justify-between">
-              <span>
-                {p.title}
-                {isAdmin && (
-                  <em className="opacity-60"> ({p.status})</em>
-                )}
-              </span>
-              <span className="space-x-3">
-                {isAdmin ? (
-                  <>
-                    <Link className="underline" href={`/admin/edit/${p.id}`}>
-                      Edit
-                    </Link>
-                    <Link className="underline" href={`/admin/view/${p.id}`}>
+            <Paper key={p.id} withBorder>
+              <Group justify="space-between" wrap="wrap">
+                <div>
+                  <Text fw={600}>{p.title}</Text>
+                  {isAdmin && (
+                    <Text c="dimmed" size="sm" component="span" aria-live="polite">
+                      {`(${p.status})`}
+                    </Text>
+                  )}
+                </div>
+                <Group gap="xs">
+                  {isAdmin ? (
+                    <>
+                      <Button component={Link} href={`/admin/edit/${p.id}`} variant="subtle">
+                        Edit
+                      </Button>
+                      <Button component={Link} href={`/admin/view/${p.id}`} variant="light">
+                        View
+                      </Button>
+                    </>
+                  ) : (
+                    <Button component={Link} href={`/posts/${p.id}`} variant="light">
                       View
-                    </Link>
-                  </>
-                ) : (
-                  <Link className="underline" href={`/posts/${p.id}`}>
-                    View
-                  </Link>
-                )}
-              </span>
-            </li>
+                    </Button>
+                  )}
+                </Group>
+              </Group>
+            </Paper>
           ))}
-        </ul>
+        </Stack>
       ) : (
-        <div className="text-center py-8 text-gray-500">
-          <p>No posts found.</p>
-        </div>
+        <Paper withBorder>
+          <Text c="dimmed" ta="center">
+            No posts found.
+          </Text>
+        </Paper>
       )}
-    </div>
+    </Container>
   );
 }

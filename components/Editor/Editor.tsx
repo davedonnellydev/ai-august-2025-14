@@ -7,6 +7,11 @@ import {
   Textarea,
   SegmentedControl,
   TagsInput,
+  Container,
+  Paper,
+  Title,
+  Anchor,
+  Text,
 } from '@mantine/core';
 import { useState } from 'react';
 import MarkdownIt from 'markdown-it';
@@ -68,104 +73,112 @@ export function Editor({
   };
 
   return (
-    <div className="grid grid-cols-12 gap-6">
-      {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
-      {/* Back link */}
-      <div className="col-span-12">
-        <a className="underline" href={backHref}>
-          ← {backText}
-        </a>
-      </div>
-      {/* Editor */}
-      <Stack className="col-span-8">
-        <TextInput
-          label="Title"
-          value={title}
-          onChange={(e) => setTitle(e.currentTarget.value)}
-        />
-        <TagsInput
-          label="Tags"
-          value={tags}
-          onChange={setTags}
-          placeholder="ai, nextjs, typescript"
-        />
-        <TextInput
-          label="Summary"
-          value={summary}
-          onChange={(e) => setSummary(e.currentTarget.value)}
-        />
-        <SegmentedControl
-          value={tab}
-          onChange={(v: any) => setTab(v)}
-          data={[
-            { label: 'Edit', value: 'edit' },
-            { label: 'Preview', value: 'preview' },
-          ]}
-        />
-        {tab === 'edit' ? (
-          <Textarea
-            autosize
-            minRows={16}
-            value={content}
-            onChange={(e) => setContent(e.currentTarget.value)}
-          />
-        ) : (
-          <div
-            className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: html }}
-          />
-        )}
-        <Group justify="space-between">
-          <SegmentedControl
-            value={status}
-            onChange={(v: any) => setStatus(v)}
-            data={[
-              { label: 'Draft', value: 'draft' },
-              { label: 'Published', value: 'published' },
-            ]}
-          />
-          <Group>
+    <Container>
+      {error && (
+        <Text c="red" size="sm" mb="sm">
+          {error}
+        </Text>
+      )}
+      <Anchor href={backHref}>← {backText}</Anchor>
+      <Group align="start" wrap="wrap" gap="md" mt="md">
+        {/* Editor */}
+        <Paper style={{ flex: '1 1 640px' }}>
+          <Stack>
+            <TextInput
+              label="Title"
+              value={title}
+              onChange={(e) => setTitle(e.currentTarget.value)}
+            />
+            <TagsInput
+              label="Tags"
+              value={tags}
+              onChange={setTags}
+              placeholder="ai, nextjs, typescript"
+            />
+            <TextInput
+              label="Summary"
+              value={summary}
+              onChange={(e) => setSummary(e.currentTarget.value)}
+            />
+            <SegmentedControl
+              value={tab}
+              onChange={(v: any) => setTab(v)}
+              data={[
+                { label: 'Edit', value: 'edit' },
+                { label: 'Preview', value: 'preview' },
+              ]}
+            />
+            {tab === 'edit' ? (
+              <Textarea
+                autosize
+                minRows={16}
+                value={content}
+                onChange={(e) => setContent(e.currentTarget.value)}
+              />
+            ) : (
+              <div
+                className="prose max-w-none"
+                dangerouslySetInnerHTML={{ __html: html }}
+              />
+            )}
+            <Group justify="space-between">
+              <SegmentedControl
+                value={status}
+                onChange={(v: any) => setStatus(v)}
+                data={[
+                  { label: 'Draft', value: 'draft' },
+                  { label: 'Published', value: 'published' },
+                ]}
+              />
+              <Group>
+                <Button
+                  variant="default"
+                  onClick={() => ai('summary')}
+                  loading={aiLoading}
+                >
+                  AI: Summary/SEO
+                </Button>
+                <Button
+                  onClick={() =>
+                    handleSave({
+                      title,
+                      summary,
+                      tags,
+                      content_md: content,
+                      status,
+                    })
+                  }
+                >
+                  Save
+                </Button>
+              </Group>
+            </Group>
+          </Stack>
+        </Paper>
+        {/* AI panel */}
+        <Paper style={{ flex: '1 1 320px' }}>
+          <Title order={4} mb="sm">
+            AI Assistant
+          </Title>
+          <Stack>
+            <Button onClick={() => ai('outline')} loading={aiLoading}>
+              AI: Outline
+            </Button>
+            <Button onClick={() => ai('expand')} loading={aiLoading}>
+              AI: Continue/Expand
+            </Button>
             <Button
-              variant="default"
-              onClick={() => ai('summary')}
+              onClick={() => ai('rewrite', { tone: 'friendly and clear' })}
               loading={aiLoading}
             >
-              AI: Summary/SEO
+              AI: Rewrite (friendly)
             </Button>
-            <Button
-              onClick={() =>
-                handleSave({
-                  title,
-                  summary,
-                  tags,
-                  content_md: content,
-                  status,
-                })
-              }
-            >
-              Save
+            <Button onClick={() => ai('title')} loading={aiLoading}>
+              AI: Titles & Slug Ideas
             </Button>
-          </Group>
-        </Group>
-      </Stack>
-      {/* AI panel */}
-      <Stack className="col-span-4">
-        <Button onClick={() => ai('outline')} loading={aiLoading}>
-          AI: Outline
-        </Button>
-        <Button onClick={() => ai('expand')} loading={aiLoading}>
-          AI: Continue/Expand
-        </Button>
-        <Button
-          onClick={() => ai('rewrite', { tone: 'friendly and clear' })}
-          loading={aiLoading}
-        >
-          AI: Rewrite (friendly)
-        </Button>
-        <Button onClick={() => ai('title')} loading={aiLoading}>
-          AI: Titles & Slug Ideas
-        </Button>
-      </Stack>
-    </div>
+          </Stack>
+        </Paper>
+      </Group>
+    </Container>
   );
 }
