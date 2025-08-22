@@ -46,6 +46,8 @@ export default async function Edit(props: { params: Promise<{ id: string }> }) {
     <Editor
       initial={post}
       onSave={savePost.bind(null, params.id)}
+      backHref="/admin"
+      backText="Back to admin posts"
     />
   );
 }

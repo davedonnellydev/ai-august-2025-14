@@ -26,5 +26,5 @@ async function createPost(payload: any) {
 }
 
 export default function New() {
-  return <Editor onSave={createPost} />;
+  return <Editor onSave={createPost} backHref="/admin" backText="Back to admin posts" />;
 }

@@ -17,9 +17,13 @@ const md = new MarkdownIt();
 export function Editor({
   initial,
   onSave,
+  backHref = '/admin',
+  backText = 'Back to admin posts',
 }: {
   initial?: any;
   onSave: (payload: any) => Promise<void>;
+  backHref?: string;
+  backText?: string;
 }) {
   const [title, setTitle] = useState(initial?.title ?? '');
   const [summary, setSummary] = useState(initial?.summary ?? '');
@@ -66,6 +70,12 @@ export function Editor({
   return (
     <div className="grid grid-cols-12 gap-6">
       {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
+      {/* Back link */}
+      <div className="col-span-12">
+        <a className="underline" href={backHref}>
+          ← {backText}
+        </a>
+      </div>
       {/* Editor */}
       <Stack className="col-span-8">
         <TextInput
