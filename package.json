@@ -15,7 +15,10 @@
     "jest:watch": "jest --watch",
     "prettier:check": "prettier --check \"**/*.{ts,tsx,md,json,css}\"",
     "prettier:write": "prettier --write \"**/*.{ts,tsx,md,json,css}\"",
-    "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest"
+    "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@libsql/client": "^0.15.12",
@@ -24,6 +27,7 @@
     "@next/bundle-analyzer": "^15.3.3",
     "@tabler/icons-react": "^3.34.0",
     "dompurify": "^3.2.6",
+    "dotenv": "^17.2.1",
     "drizzle-orm": "^0.44.4",
     "isomorphic-dompurify": "^2.26.0",
     "markdown-it": "^14.1.0",
