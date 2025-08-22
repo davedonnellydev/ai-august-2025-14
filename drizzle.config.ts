@@ -1,9 +1,9 @@
-import type { Config } from "drizzle-kit";
+import type { Config } from 'drizzle-kit';
 
 export default {
-  schema: "./db/schema.ts",
-  out: "./drizzle",
-  dialect: "turso",
+  schema: './db/schema.ts',
+  out: './drizzle',
+  dialect: 'turso',
   dbCredentials: {
     url: process.env.DATABASE_URL!,
     authToken: process.env.DATABASE_AUTH_TOKEN,
