@@ -36,7 +36,7 @@ export default async function AdminHome() {
                   <Link className="underline" href={`/admin/edit/${p.id}`}>
                     Edit
                   </Link>
-                  <Link className="underline" href={`/posts/${p.slug}`}>
+                  <Link className="underline" href={`/posts/${p.id}`}>
                     View
                   </Link>
                 </span>

@@ -38,9 +38,9 @@ async function savePost(postId: string, payload: any) {
   redirect('/admin');
 }
 
-export default async function Edit({ params }: { params: { id: string } }) {
-  const { id } = await params
-    const post = await getPost(id);
+export default async function Edit(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+  const post = await getPost(params.id);
 
   return (
     <Editor
