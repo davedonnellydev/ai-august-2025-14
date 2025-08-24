@@ -6,7 +6,8 @@
 **🎯 Project Objective**: Simple blog platform where AI helps write or edit posts.  
 **🚀 Features**: Auth (basic); Write blog post, get AI rewrite/expand suggestions; List/view posts  
 **🛠️ Tech used**: Next.js, TypeScript, Mantine UI, Drizzle, libSQL (Turso), OpenAI Responses API  
-**▶️ Live Demo**: _[https://ai-august-2025-14.netlify.app](https://ai-august-2025-14.netlify.app)_  
+**▶️ Live Demo**: [https://ai-august-2025-14.netlify.app](https://ai-august-2025-14.netlify.app)  
+**Admin password:** superSecretPassword2025!  
 
 ## 🗒️ Summary
 
